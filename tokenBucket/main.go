@@ -2,34 +2,31 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
+// Create a Simple REST API and implement rate limiter
 func main() {
 
-	//create a simple http server to respond to hello route
 	http.HandleFunc("/hello", hello)
-	err := http.ListenAndServe("localhost:8080", nil)
-
-	if err != nil {
-		log.Fatal("Error on listening to PORT 8080")
-	}
+	http.ListenAndServe("localhost:8080", nil)
 
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
 
-	//Use of anonymous struct
+	// Create anonymous struct(Creating here as we need to use onle once)
+
 	message := struct {
-		Status string `json:"status"`
-		Body   string `json:"body"`
+		Message string `json:"message"`
+		Body    string `json:"body"`
 	}{
-		Status: "success",
-		Body:   "We got your request!",
+		Message: "success",
+		Body:    "A Simple Rest API",
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("content-Type", "applicatio/json")
 	json.NewEncoder(w).Encode(message)
+
 }
